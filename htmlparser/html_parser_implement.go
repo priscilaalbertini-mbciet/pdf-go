@@ -2,7 +2,6 @@ package htmlparser
 
 import (
 	"bytes"
-	"fmt"
 	"text/template"
 )
 
@@ -32,7 +31,5 @@ func (a *htmlStruct) Create(templateName string, data interface{}) (string, erro
 		return "", err
 	}
 
-	output := fmt.Sprint(foo.String())
-
-	return output, nil
+	return foo.String(), nil
 }

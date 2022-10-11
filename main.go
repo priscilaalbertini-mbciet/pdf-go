@@ -6,6 +6,8 @@ import (
 	"pdf-go/htmlparser"
 	"pdf-go/pdfgenerator"
 
+	"github.com/gofiber/fiber/v2"
+
 	"github.com/shopspring/decimal"
 )
 
@@ -30,6 +32,8 @@ type Company struct {
 }
 
 func main() {
+	app := fiber.New()
+
 	h := htmlparser.New("tmp")
 	wk := pdfgenerator.NewWkHtmlToPdf("tmp")
 
@@ -55,12 +59,24 @@ func main() {
 	}
 
 	defer os.Remove(htmlGenerated)
-	fmt.Println("HTML gerado", htmlGenerated)
+	// fmt.Println("HTML gerado", htmlGenerated)
 
 	filePDFName, err := wk.Create(htmlGenerated)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("PDF gerado", filePDFName)
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		c.Set("Content-type", "application/pdf;base64")
+		// c.Set("Content-type", "application/json")
+
+		// t := Teste{
+		// 	Order: "RRRRR",
+		// 	File:  a.Bytes(),
+		// }
+		return c.Send(filePDFName.Bytes())
+	})
+	app.Listen(":3000")
+
 }

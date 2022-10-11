@@ -1,10 +1,10 @@
 package pdfgenerator
 
 import (
+	"bytes"
 	"strings"
 
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
-	"github.com/google/uuid"
 )
 
 type wk struct {
@@ -15,25 +15,19 @@ func NewWkHtmlToPdf(rootPath string) PdfGeneratorInterface {
 	return &wk{rootPath: rootPath}
 }
 
-func (w *wk) Create(htmlFile string) (string, error) {
+func (w *wk) Create(htmlFile string) (*bytes.Buffer, error) {
 
 	pdfg, err := wkhtmltopdf.NewPDFGenerator()
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	pdfg.AddPage(wkhtmltopdf.NewPageReader(strings.NewReader(htmlFile)))
 
 	if err := pdfg.Create(); err != nil {
-		return "", err
+		return nil, err
 	}
 
-	fileName := w.rootPath + "/" + uuid.New().String() + ".pdf"
-
-	if err := pdfg.WriteFile(fileName); err != nil {
-		return "", err
-	}
-
-	return fileName, nil
+	return pdfg.Buffer(), nil
 }
