@@ -13,20 +13,33 @@
       <th>Código</th>
       <th>Nome</th>
       <th>CPF</th>
+      <th>Quantidade</th>
+      <th>Preço</th>
     </tr>
     {{range .Customers}}
     <tr>
       <td>{{.Id}}</td>
       <td>{{.Name}}</td>
       <td>{{.Cpf}}</td>
+      <td>{{.Quantity}}</td>
+      <td>{{.Price}}</td>
     </tr>
     {{end}}
   </table>
 </body>
 <style>
   table {
-    border: 1px;
     width: 100%;
+    border: thin solid black;
+    border-collapse: collapse;
+  }
+
+  td { 
+    border: thin solid black;
+  }
+
+  th { 
+    border: thin solid black;
   }
 </style>
 </html>

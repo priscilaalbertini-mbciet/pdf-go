@@ -1,7 +1,7 @@
 package pdfgenerator
 
 import (
-	"os"
+	"strings"
 
 	"github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"github.com/google/uuid"
@@ -16,10 +16,6 @@ func NewWkHtmlToPdf(rootPath string) PdfGeneratorInterface {
 }
 
 func (w *wk) Create(htmlFile string) (string, error) {
-	f, err := os.Open(htmlFile)
-	if err != nil {
-		return "", err
-	}
 
 	pdfg, err := wkhtmltopdf.NewPDFGenerator()
 
@@ -27,7 +23,7 @@ func (w *wk) Create(htmlFile string) (string, error) {
 		return "", err
 	}
 
-	pdfg.AddPage(wkhtmltopdf.NewPageReader(f))
+	pdfg.AddPage(wkhtmltopdf.NewPageReader(strings.NewReader(htmlFile)))
 
 	if err := pdfg.Create(); err != nil {
 		return "", err

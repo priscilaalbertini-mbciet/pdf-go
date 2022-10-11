@@ -1,10 +1,9 @@
 package htmlparser
 
 import (
-	"os"
+	"bytes"
+	"fmt"
 	"text/template"
-
-	"github.com/google/uuid"
 )
 
 type htmlStruct struct {
@@ -23,17 +22,17 @@ func (a *htmlStruct) Create(templateName string, data interface{}) (string, erro
 		return "", err
 	}
 
-	fileName := a.rootPath + "/" + uuid.New().String() + ".html"
-
-	fileWriter, err := os.Create(fileName)
-
 	if err != nil {
 		return "", err
 	}
 
-	if err := templateGenerator.Execute(fileWriter, data); err != nil {
+	foo := new(bytes.Buffer)
+
+	if err := templateGenerator.Execute(foo, data); err != nil {
 		return "", err
 	}
 
-	return fileName, nil
+	output := fmt.Sprint(foo.String())
+
+	return output, nil
 }
