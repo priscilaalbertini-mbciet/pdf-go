@@ -22,7 +22,6 @@ RUN apk add --no-cache \
     ttf-freefont \
     ttf-liberation \
     && apk add --no-cache --virtual .build-deps \
-    msttcorefonts-installer \
     \
     # Clean up when done
     && rm -rf /tmp/* \
